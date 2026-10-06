@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types, no-irregular-whitespace, react/no-unescaped-entities */
 import { Component, useEffect, useMemo, useState } from 'react'
-import { CalendarDays, Copy, Download, MapPin, Plus, Receipt, Trash2 } from 'lucide-react'
+import { CalendarDays, Copy, Download, MapPin, Menu, Plus, Receipt, Trash2, X } from 'lucide-react'
 
 const STORAGE_KEY = 'tripnest-trips'
 const packingDefaults = ['Passport / College ID', 'Phone charger & Power bank', 'Comfortable shoes & sunscreen', 'Sunscreen SPF 50+ & Sunglasses', 'First aid & Motion sickness meds']
@@ -55,7 +55,9 @@ function past(trip) { return new Date(`${trip.endDate}T23:59:59`) < new Date() }
 
 function Button({ children, onClick, secondary = false, type = 'button' }) { return <button type={type} onClick={onClick} className={`button ${secondary ? 'button-secondary' : ''}`}>{children}</button> }
 function Header({ onHome, onCreate, onArchive, archive }) {
-  return <header className="topbar"><button className="brand" onClick={onHome}><img src="/tripnest-logo.png" alt="TripNest" /></button><nav><button className={!archive ? 'active-nav' : ''} onClick={onHome}>Dashboard</button><button className={archive ? 'active-nav' : ''} onClick={onArchive}>Past trips</button><Button onClick={onCreate}><Plus size={16} /> Plan a trip</Button><span className="avatar">K</span></nav></header>
+  const [menuOpen, setMenuOpen] = useState(false)
+  const closeMenu = () => setMenuOpen(false)
+  return <header className={`topbar ${menuOpen ? 'menu-open' : ''}`}><button className="brand" onClick={() => { closeMenu(); onHome() }}><img src="/tripnest-logo.png" alt="TripNest" /></button><button className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button><nav><button className={!archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onHome() }}>Dashboard</button><button className={archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onArchive() }}>Past trips</button><Button onClick={() => { closeMenu(); onCreate() }}><Plus size={16} /> Plan a trip</Button><span className="avatar">K</span></nav></header>
 }
 function TripCard({ trip, onOpen }) {
   const days = daysUntil(trip.startDate)
