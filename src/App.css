@@ -147,3 +147,24 @@ input:focus,textarea:focus,select:focus{border-color:var(--orange);box-shadow:0 
 .archive-image{border-radius:12px 12px 0 0}
 footer{background:#294538!important;color:#f8f1e7!important;padding:22px 5vw!important}
 footer b{color:#f5b28f!important}
+.theme-toggle{padding:0 12px!important;border:1px solid #dbcdbd;border-radius:999px;color:var(--deep);font-size:11px}
+.hero:after{content:"";position:absolute;inset:auto 8% 22px;height:1px;background:linear-gradient(90deg,transparent,#f7d28a99,transparent);box-shadow:0 0 18px #f7d28a88}
+.hero-content{z-index:1}
+.hero h1{text-shadow:0 3px 22px #05030280}
+.hero-chip{border:1px solid #f8d29355;box-shadow:0 8px 24px #05030225}
+.trip-card:nth-child(2){transform:translateY(14px)}
+.trip-card:nth-child(2):hover{transform:translateY(8px)}
+.trip-card:before,.panel:before{content:"";display:block;position:absolute}
+.trip-card{position:relative}
+.trip-card:after{content:"✦";position:absolute;right:16px;top:106px;color:#f4c36b;font-size:16px;text-shadow:0 0 12px #f4c36b}
+.panel{position:relative;overflow:hidden}
+.panel:after{content:"";position:absolute;width:90px;height:90px;right:-35px;top:-35px;border:1px solid #bd684344;border-radius:50%;pointer-events:none}
+html[data-theme="night"]{--bg:#17151c;--green:#c084fc;--deep:#f5e9ff;--ink:#f7f0e9;--muted:#b9aebe;--line:#393141;--wash:#2a2433;--orange:#f59e72;--white:#211d27}
+html[data-theme="night"] body{background:radial-gradient(circle at 12% 8%,#3a214a 0,transparent 35%),#17151c}
+html[data-theme="night"] .topbar{background:rgba(31,27,38,.88);border-color:#46394d}
+html[data-theme="night"] .trip-card,html[data-theme="night"] .empty-state,html[data-theme="night"] .form-card,html[data-theme="night"] .trip-summary,html[data-theme="night"] .panel{background:#211d27;border-color:#393141;color:var(--ink)}
+html[data-theme="night"] input,html[data-theme="night"] textarea,html[data-theme="night"] select{background:#29232f;color:var(--ink);border-color:#4a3d52}
+html[data-theme="night"] .theme-toggle{border-color:#63506d;color:var(--deep)}
+html[data-theme="night"] .archive-prompt{background:#302738}
+html[data-theme="night"] footer{background:#0e0c12!important}
+@media(max-width:800px){.trip-card:nth-child(2){transform:none}.trip-card:nth-child(2):hover{transform:translateY(-3px)}.theme-toggle{display:flex!important;align-items:center}}
