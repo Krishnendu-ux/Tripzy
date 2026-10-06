@@ -183,4 +183,7 @@ html[data-theme="night"] .filters span:first-child{background:#b56cf0;color:#201
 html[data-theme="night"] .archive-bottom section{background:#2a2433;border:1px solid #393141}
 html[data-theme="night"] .archive-bottom h3{color:#fff4e7}
 html[data-theme="night"] .archive-bottom .button{background:#f4f0e8;color:#2b2330}
+html[data-theme="night"] .archive-page .green-pill,
+html[data-theme="night"] .archive-page .section-heading h2 small{background:#dcebcf;color:#2b2330}
+html[data-theme="night"] .archive-page .archive-image .badge{background:#f4f0e8;color:#2b2330}
 @media(max-width:800px){.trip-card:nth-child(2){transform:none}.trip-card:nth-child(2):hover{transform:translateY(-3px)}.theme-toggle{display:flex!important;align-items:center}}
