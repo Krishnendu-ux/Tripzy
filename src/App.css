@@ -255,5 +255,16 @@ html[data-theme="night"] .budget-panel{background:#211d27;border-color:#393141}
 html[data-theme="night"] .budget-total{color:#fff4e7}
 html[data-theme="night"] .budget-bar{background:#4a3d52}
 html[data-theme="night"] .budget-summary{color:#d8cce0}
+html[data-theme="night"] .detail-page .green-pill,
+html[data-theme="night"] .detail-page .sync,
+html[data-theme="night"] .detail-page .panel-title>small,
+html[data-theme="night"] .detail-page .panel-title h2 small{background:#dcebcf;color:#2b2330}
+html[data-theme="night"] .detail-page .green-pill{border:0}
+html[data-theme="night"] .detail-page .back-link,
+html[data-theme="night"] .detail-page .detail-top{color:#eadff0}
+html[data-theme="night"] .detail-page .detail-actions .button-secondary{background:#332b3d;color:#f5e9ff}
+html[data-theme="night"] .detail-page .expense-box .button,
+html[data-theme="night"] .detail-page .add-box .button,
+html[data-theme="night"] .detail-page .packing-panel .button{color:#2b2330}
 @media(max-width:800px){.topbar nav label.theme-switch{display:flex!important;height:44px!important;padding:0 14px!important;align-items:center;border-radius:10px}}
 @media(max-width:800px){.trip-card:nth-child(2){transform:none}.trip-card:nth-child(2):hover{transform:translateY(-3px)}.theme-toggle{display:flex!important;align-items:center}}
