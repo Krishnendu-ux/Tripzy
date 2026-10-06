@@ -174,4 +174,13 @@ html[data-theme="night"] .topbar .button{background:#f59e72;color:#241a20;box-sh
 html[data-theme="night"] .topbar .button:hover{background:#ffb08c;color:#241a20}
 html[data-theme="night"] .avatar{background:#ead0aa;color:#342838}
 html[data-theme="night"] .brand{background:#f4f0e8;border-radius:12px;padding:4px 10px}
+html[data-theme="night"] .archive-card{background:#211d27;color:var(--ink);border:1px solid #393141}
+html[data-theme="night"] .archive-card>div:last-child small{color:#d0c2d6}
+html[data-theme="night"] .archive-card h3{color:#fff4e7}
+html[data-theme="night"] .archive-card p{color:var(--muted)}
+html[data-theme="night"] .filters span{background:#332b3d;color:#eadff0}
+html[data-theme="night"] .filters span:first-child{background:#b56cf0;color:#201528}
+html[data-theme="night"] .archive-bottom section{background:#2a2433;border:1px solid #393141}
+html[data-theme="night"] .archive-bottom h3{color:#fff4e7}
+html[data-theme="night"] .archive-bottom .button{background:#f4f0e8;color:#2b2330}
 @media(max-width:800px){.trip-card:nth-child(2){transform:none}.trip-card:nth-child(2):hover{transform:translateY(-3px)}.theme-toggle{display:flex!important;align-items:center}}
