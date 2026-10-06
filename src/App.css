@@ -117,3 +117,33 @@
   .page{width:calc(100% - 36px)}
   .trip-grid{grid-template-columns:repeat(2,1fr)}
 }
+
+/* Tripzy's warmer editorial palette and richer page rhythm. */
+:root{--bg:#f7f1e8;--green:#486653;--deep:#294538;--ink:#29251f;--muted:#776f65;--line:#e6ddd0;--wash:#edf0e6;--orange:#bd6843;--white:#fffdf9}
+body{background:radial-gradient(circle at 5% 18%,#fffaf2 0,transparent 28%),var(--bg)}
+.topbar{background:rgba(255,253,249,.88);border-color:#e4d9ca}
+.active-nav{background:#e8eee4;color:var(--deep)!important}
+.button{background:var(--orange);box-shadow:0 5px 12px #9c4d2b24}
+.button:hover{background:#9f4f32}
+.button-secondary{background:#e9eee4;color:var(--deep);box-shadow:none}
+.page{position:relative}
+.dashboard:after{content:"";position:absolute;z-index:-1;top:650px;left:-8vw;width:116vw;height:340px;background:linear-gradient(115deg,transparent 8%,#efe6d9 8%,#efe6d9 92%,transparent 92%);transform:rotate(-2deg);opacity:.6;pointer-events:none}
+.section-heading{padding-bottom:12px;border-bottom:1px solid #e4d9ca}
+.section-heading h2,.panel h2{color:var(--deep)}
+.section-heading h2 small{background:#dfe9da}
+.trip-grid{gap:22px}
+.trip-card{background:var(--white);border-color:#e5d9cb;box-shadow:0 8px 24px #715d4720}
+.trip-card:hover{box-shadow:0 16px 30px #715d4730}
+.card-strip{background:#f0eee5}
+.card-cta{background:#ecefe6}
+.empty-state,.form-card,.trip-summary,.panel{background:rgba(255,253,249,.94);border:1px solid #e5d9cb;box-shadow:0 8px 24px #715d4715}
+.empty-icon,.choice-icon,.tip,.add-box{background:#edf0e6}
+.choice.selected{border-color:var(--green);background:#f0f3e9}
+input,textarea,select{background:#fffdfa;border-color:#e1d6c8}
+input:focus,textarea:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 2px #bd684326}
+.green-pill{background:#e5ecdf;color:var(--deep)}
+.archive-prompt{background:#efe7dc;border-radius:12px;padding:14px 16px}
+.archive-prompt button{color:var(--orange)}
+.archive-image{border-radius:12px 12px 0 0}
+footer{background:#294538!important;color:#f8f1e7!important;padding:22px 5vw!important}
+footer b{color:#f5b28f!important}
