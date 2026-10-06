@@ -186,6 +186,14 @@ html[data-theme="night"] .archive-bottom .button{background:#f4f0e8;color:#2b233
 html[data-theme="night"] .archive-page .green-pill,
 html[data-theme="night"] .archive-page .section-heading h2 small{background:#dcebcf;color:#2b2330}
 html[data-theme="night"] .archive-page .archive-image .badge{background:#f4f0e8;color:#2b2330}
+html[data-theme="night"] .form-card{background:#211d27;border:1px solid #393141}
+html[data-theme="night"] .choice{background:#241f2b;color:#f7f0e9;border-color:#4a3d52}
+html[data-theme="night"] .choice.selected{background:#f4f0e8;color:#2b2330;border-color:#c084fc}
+html[data-theme="night"] .choice.selected small{color:#5c5362}
+html[data-theme="night"] .choice-icon{background:#dcebcf;color:#2b2330}
+html[data-theme="night"] .choice b{color:#9a4de0}
+html[data-theme="night"] .tip{background:#dcebcf;color:#4e554c}
+html[data-theme="night"] .button-secondary{background:#332b3d;color:#f5e9ff}
 /* Animated day/night switch */
 .theme-switch{--toggle-size:10px;--container-width:5.625em;--container-height:2.5em;--container-radius:6.25em;--container-light-bg:#3d7eae;--container-night-bg:#1d1f2c;--circle-container-diameter:3.375em;--sun-moon-diameter:2.125em;--sun-bg:#ecca2f;--moon-bg:#c4c9d1;--spot-color:#959db1;--circle-container-offset:calc((var(--circle-container-diameter) - var(--container-height)) / 2 * -1);--transition:.5s cubic-bezier(0,-.02,.4,1.25);--circle-transition:.3s cubic-bezier(0,-.02,.35,1.17);display:block!important;position:relative;width:var(--container-width);height:var(--container-height);font-size:var(--toggle-size);cursor:pointer}
 .theme-switch *,.theme-switch *::before,.theme-switch *::after{box-sizing:border-box;margin:0;padding:0;font-size:var(--toggle-size)}
