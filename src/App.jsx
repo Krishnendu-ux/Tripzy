@@ -1,6 +1,15 @@
 /* eslint-disable react/prop-types, no-irregular-whitespace, react/no-unescaped-entities */
 import { Component, useEffect, useMemo, useState } from 'react'
 import { CalendarDays, CloudSun, Copy, Download, MapPin, Menu, Plus, Receipt, Trash2, Wind, X } from 'lucide-react'
+import tripnestBackground from '../assets/tripnest-bg.png'
+import tripzyLogo from '../assets/tripnest-logo.png'
+import coorgImage from '../assets/trip-images/coorg.jpg'
+import defaultImage from '../assets/trip-images/default.jpg'
+import goaImage from '../assets/trip-images/goa.jpg'
+import jaisalmerImage from '../assets/trip-images/jaisalmer.jpg'
+import manaliImage from '../assets/trip-images/manali.jpg'
+import pondicherryImage from '../assets/trip-images/pondicherry.jpg'
+import wayanadImage from '../assets/trip-images/wayanad.jpg'
 
 const STORAGE_KEY = 'tripnest-trips'
 const packingDefaults = ['Passport / College ID', 'Phone charger & Power bank', 'Comfortable shoes & sunscreen', 'Sunscreen SPF 50+ & Sunglasses', 'First aid & Motion sickness meds']
@@ -18,18 +27,18 @@ const pastTrips = [
 ]
 
 const destinationImages = {
-  goa: '/trip-images/goa.jpg',
-  coorg: '/trip-images/coorg.jpg',
-  manali: '/trip-images/manali.jpg',
-  wayanad: '/trip-images/wayanad.jpg',
-  jaisalmer: '/trip-images/jaisalmer.jpg',
-  pondicherry: '/trip-images/pondicherry.jpg',
-  puducherry: '/trip-images/pondicherry.jpg',
+  goa: goaImage,
+  coorg: coorgImage,
+  manali: manaliImage,
+  wayanad: wayanadImage,
+  jaisalmer: jaisalmerImage,
+  pondicherry: pondicherryImage,
+  puducherry: pondicherryImage,
 }
 
 function destinationImage(destination) {
   const key = Object.keys(destinationImages).find((name) => destination.toLowerCase().includes(name))
-  return destinationImages[key || 'default'] || '/trip-images/default.jpg'
+  return destinationImages[key] || defaultImage
 }
 
 const spotGuide = {
@@ -57,7 +66,7 @@ function Button({ children, onClick, secondary = false, type = 'button' }) { ret
 function Header({ onHome, onCreate, onArchive, archive, darkMode, onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = () => setMenuOpen(false)
-  return <header className={`topbar ${menuOpen ? 'menu-open' : ''}`}><button className="brand" onClick={() => { closeMenu(); onHome() }}><img src="/tripnest-logo.png" alt="Tripzy" /></button><button className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button><nav><button className={!archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onHome() }}>Dashboard</button><button className={archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onArchive() }}>Past trips</button><label className="theme-switch" aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}><input className="theme-switch__checkbox" type="checkbox" checked={darkMode} onChange={() => { closeMenu(); onToggleTheme() }} /><span className="theme-switch__container"><span className="theme-switch__circle-container"><span className="theme-switch__sun-moon-container"><span className="theme-switch__moon"><span className="theme-switch__spot" /><span className="theme-switch__spot" /><span className="theme-switch__spot" /></span></span></span><span className="theme-switch__clouds" /><span className="theme-switch__stars-container">✦ ✧</span></span></label><Button onClick={() => { closeMenu(); onCreate() }}><Plus size={16} /> Plan a trip</Button><span className="avatar">K</span></nav></header>
+  return <header className={`topbar ${menuOpen ? 'menu-open' : ''}`}><button className="brand" onClick={() => { closeMenu(); onHome() }}><img src={tripzyLogo} alt="Tripzy" /></button><button className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button><nav><button className={!archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onHome() }}>Dashboard</button><button className={archive ? 'active-nav' : ''} onClick={() => { closeMenu(); onArchive() }}>Past trips</button><label className="theme-switch" aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}><input className="theme-switch__checkbox" type="checkbox" checked={darkMode} onChange={() => { closeMenu(); onToggleTheme() }} /><span className="theme-switch__container"><span className="theme-switch__circle-container"><span className="theme-switch__sun-moon-container"><span className="theme-switch__moon"><span className="theme-switch__spot" /><span className="theme-switch__spot" /><span className="theme-switch__spot" /></span></span></span><span className="theme-switch__clouds" /><span className="theme-switch__stars-container">✦ ✧</span></span></label><Button onClick={() => { closeMenu(); onCreate() }}><Plus size={16} /> Plan a trip</Button><span className="avatar">K</span></nav></header>
 }
 function TripCard({ trip, onOpen }) {
   const days = daysUntil(trip.startDate)
@@ -120,7 +129,7 @@ function WeatherCard({ destination }) {
 }
 function Dashboard({ trips, onOpen, onCreate, onArchive }) {
   const upcoming = trips.filter((trip) => !past(trip))
-  return <main className="page dashboard"><section className="hero" style={{ backgroundImage: "linear-gradient(90deg, #0a2019b8, #0a201966), url('/tripnest-bg.png')" }}><span className="hero-status">● LIVE TRAVEL DESK · COORG PASS</span><span className="hero-location">◉ 12° 25' N · 75° 44' E</span><div className="hero-content"><span className="hero-chip">◎ CURATE · EXPLORE · SAFEGUARD</span><h1>Make room for <em>adventure.</em></h1><p>Plan thoughtfully, travel lightly, and enjoy every stop along the way. Curate itineraries, track split expenses, and safeguard memories in one tranquil notebook.</p><Button onClick={onCreate}>✈ Plan your next trip　→</Button><div className="hero-pills"><span>✣ 3 Active Journeys</span><span>♧ 1 Shared Crew</span><span>⌁ Coorg Pass Viewpoint</span></div></div></section>{upcoming.length > 0 && <WeatherCard destination={upcoming[0].destination} />}<div className="section-heading"><div><h2>Upcoming trips <small>3 active journeys</small></h2><p className="muted">Your confirmed and collaborative itineraries.</p></div><Button onClick={onCreate}><Plus size={16} /> New trip</Button></div>{upcoming.length ? <div className="trip-grid">{upcoming.map((trip) => <TripCard key={trip.id} trip={trip} onOpen={onOpen} />)}</div> : <EmptyState onCreate={onCreate} />}<div className="archive-prompt">⌁ Looking for completed expeditions and archival scrapbooks? <button onClick={onArchive}>View your past trips →</button></div></main>
+  return <main className="page dashboard"><section className="hero" style={{ backgroundImage: `linear-gradient(90deg, #0a2019b8, #0a201966), url('${tripnestBackground}')` }}><span className="hero-status">● LIVE TRAVEL DESK · COORG PASS</span><span className="hero-location">◉ 12° 25' N · 75° 44' E</span><div className="hero-content"><span className="hero-chip">◎ CURATE · EXPLORE · SAFEGUARD</span><h1>Make room for <em>adventure.</em></h1><p>Plan thoughtfully, travel lightly, and enjoy every stop along the way. Curate itineraries, track split expenses, and safeguard memories in one tranquil notebook.</p><Button onClick={onCreate}>✈ Plan your next trip　→</Button><div className="hero-pills"><span>✣ 3 Active Journeys</span><span>♧ 1 Shared Crew</span><span>⌁ Coorg Pass Viewpoint</span></div></div></section>{upcoming.length > 0 && <WeatherCard destination={upcoming[0].destination} />}<div className="section-heading"><div><h2>Upcoming trips <small>3 active journeys</small></h2><p className="muted">Your confirmed and collaborative itineraries.</p></div><Button onClick={onCreate}><Plus size={16} /> New trip</Button></div>{upcoming.length ? <div className="trip-grid">{upcoming.map((trip) => <TripCard key={trip.id} trip={trip} onOpen={onOpen} />)}</div> : <EmptyState onCreate={onCreate} />}<div className="archive-prompt">⌁ Looking for completed expeditions and archival scrapbooks? <button onClick={onArchive}>View your past trips →</button></div></main>
 }
 function CreateTrip({ onCancel, onSave }) {
   const [form, setForm] = useState({ title: '', destination: '', type: 'solo', startDate: '', endDate: '', notes: '' }); const update = (key, value) => setForm((old) => ({ ...old, [key]: value }))
