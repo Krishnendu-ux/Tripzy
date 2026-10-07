@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types, no-irregular-whitespace, react/no-unescaped-entities */
 import { Component, useEffect, useMemo, useState } from 'react'
-import { CalendarDays, Copy, Download, MapPin, Menu, Plus, Receipt, Trash2, X } from 'lucide-react'
+import { CalendarDays, CloudSun, Copy, Download, MapPin, Menu, Plus, Receipt, Trash2, Wind, X } from 'lucide-react'
 
 const STORAGE_KEY = 'tripnest-trips'
 const packingDefaults = ['Passport / College ID', 'Phone charger & Power bank', 'Comfortable shoes & sunscreen', 'Sunscreen SPF 50+ & Sunglasses', 'First aid & Motion sickness meds']
@@ -64,9 +64,47 @@ function TripCard({ trip, onOpen }) {
   return <button className={`trip-card ${trip.type}`} onClick={() => onOpen(trip.id)}><div className="card-image" style={{ backgroundImage: `linear-gradient(180deg, transparent 20%, #07140dcc), url('${destinationImage(trip.destination)}')` }}><span className="badge">{trip.type === 'group' ? 'GROUP TRIP' : 'SOLO TRIP'}</span><span className="date-badge">◷ {days > 0 ? `${days} days to go` : 'In progress'}</span></div><div className="trip-card-body"><div className="card-heading"><h3>{trip.title}</h3><span className="circle-arrow">→</span></div><p className="meta"><MapPin size={13} /> {trip.destination}</p><p className="meta"><CalendarDays size={13} /> {dateText(trip.startDate)} – {dateText(trip.endDate)}</p><div className="card-strip">{trip.type === 'group' ? `◉ ${trip.members.length} members · Join code ${trip.inviteCode}` : '☷ 4 stays bookmarked · Private'}</div><span className="card-cta">{trip.type === 'group' ? 'Open Group Hub' : 'View Journal & Itinerary'}</span></div></button>
 }
 function EmptyState({ onCreate }) { return <section className="empty-state"><div className="empty-icon">♧</div><h2>Your next story starts here</h2><p>Create a trip and keep plans, expenses, and packing in one simple place.</p><Button onClick={onCreate}><Plus size={16} /> Create your first trip</Button><small>✓ Split bill calculator　·　✓ Smart packing bins　·　✓ Offline map pins</small></section> }
+function weatherDescription(code) {
+  if (code === 0) return 'Clear sky'
+  if ([1, 2, 3].includes(code)) return 'Partly cloudy'
+  if ([45, 48].includes(code)) return 'Foggy'
+  if ([51, 53, 55, 56, 57].includes(code)) return 'Light drizzle'
+  if ([61, 63, 65, 66, 67].includes(code)) return 'Rain showers'
+  if ([71, 73, 75, 77].includes(code)) return 'Snow showers'
+  if ([80, 81, 82].includes(code)) return 'Rain showers'
+  if ([95, 96, 99].includes(code)) return 'Thunderstorms'
+  return 'Current conditions'
+}
+function WeatherCard({ destination }) {
+  const [weather, setWeather] = useState(null)
+  const [status, setStatus] = useState('loading')
+  useEffect(() => {
+    const controller = new AbortController()
+    async function loadWeather() {
+      try {
+        setStatus('loading')
+        const locationResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(destination)}&count=1&language=en&format=json`, { signal: controller.signal })
+        if (!locationResponse.ok) throw new Error('Could not find this destination')
+        const locationData = await locationResponse.json()
+        const location = locationData.results?.[0]
+        if (!location) throw new Error('Could not find this destination')
+        const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`, { signal: controller.signal })
+        if (!weatherResponse.ok) throw new Error('Weather service unavailable')
+        const weatherData = await weatherResponse.json()
+        setWeather({ ...weatherData.current, place: location.name, country: location.country })
+        setStatus('ready')
+      } catch (error) {
+        if (error.name !== 'AbortError') setStatus('error')
+      }
+    }
+    loadWeather()
+    return () => controller.abort()
+  }, [destination])
+  return <section className="weather-card" aria-live="polite"><div className="weather-heading"><div><p className="eyebrow">LIVE DESTINATION WEATHER</p><h2><CloudSun size={21} /> {destination}</h2></div><span className="weather-source">Open-Meteo API</span></div>{status === 'loading' && <p className="weather-message">Checking the latest conditions...</p>}{status === 'error' && <p className="weather-message">Weather is temporarily unavailable. You can still use the rest of Tripzy normally.</p>}{status === 'ready' && <div className="weather-content"><div className="weather-temperature"><strong>{Math.round(weather.temperature_2m)}°C</strong><span>{weatherDescription(weather.weather_code)}</span></div><div className="weather-stat"><CloudSun size={17} /><span>Humidity<strong>{weather.relative_humidity_2m}%</strong></span></div><div className="weather-stat"><Wind size={17} /><span>Wind<strong>{Math.round(weather.wind_speed_10m)} km/h</strong></span></div></div>}</section>
+}
 function Dashboard({ trips, onOpen, onCreate, onArchive }) {
   const upcoming = trips.filter((trip) => !past(trip))
-  return <main className="page dashboard"><section className="hero" style={{ backgroundImage: "linear-gradient(90deg, #0a2019b8, #0a201966), url('/tripnest-bg.png')" }}><span className="hero-status">● LIVE TRAVEL DESK · COORG PASS</span><span className="hero-location">◉ 12° 25' N · 75° 44' E</span><div className="hero-content"><span className="hero-chip">◎ CURATE · EXPLORE · SAFEGUARD</span><h1>Make room for <em>adventure.</em></h1><p>Plan thoughtfully, travel lightly, and enjoy every stop along the way. Curate itineraries, track split expenses, and safeguard memories in one tranquil notebook.</p><Button onClick={onCreate}>✈ Plan your next trip　→</Button><div className="hero-pills"><span>✣ 3 Active Journeys</span><span>♧ 1 Shared Crew</span><span>⌁ Coorg Pass Viewpoint</span></div></div></section><div className="section-heading"><div><h2>Upcoming trips <small>3 active journeys</small></h2><p className="muted">Your confirmed and collaborative itineraries.</p></div><Button onClick={onCreate}><Plus size={16} /> New trip</Button></div>{upcoming.length ? <div className="trip-grid">{upcoming.map((trip) => <TripCard key={trip.id} trip={trip} onOpen={onOpen} />)}</div> : <EmptyState onCreate={onCreate} />}<div className="archive-prompt">⌁ Looking for completed expeditions and archival scrapbooks? <button onClick={onArchive}>View your past trips →</button></div></main>
+  return <main className="page dashboard"><section className="hero" style={{ backgroundImage: "linear-gradient(90deg, #0a2019b8, #0a201966), url('/tripnest-bg.png')" }}><span className="hero-status">● LIVE TRAVEL DESK · COORG PASS</span><span className="hero-location">◉ 12° 25' N · 75° 44' E</span><div className="hero-content"><span className="hero-chip">◎ CURATE · EXPLORE · SAFEGUARD</span><h1>Make room for <em>adventure.</em></h1><p>Plan thoughtfully, travel lightly, and enjoy every stop along the way. Curate itineraries, track split expenses, and safeguard memories in one tranquil notebook.</p><Button onClick={onCreate}>✈ Plan your next trip　→</Button><div className="hero-pills"><span>✣ 3 Active Journeys</span><span>♧ 1 Shared Crew</span><span>⌁ Coorg Pass Viewpoint</span></div></div></section>{upcoming.length > 0 && <WeatherCard destination={upcoming[0].destination} />}<div className="section-heading"><div><h2>Upcoming trips <small>3 active journeys</small></h2><p className="muted">Your confirmed and collaborative itineraries.</p></div><Button onClick={onCreate}><Plus size={16} /> New trip</Button></div>{upcoming.length ? <div className="trip-grid">{upcoming.map((trip) => <TripCard key={trip.id} trip={trip} onOpen={onOpen} />)}</div> : <EmptyState onCreate={onCreate} />}<div className="archive-prompt">⌁ Looking for completed expeditions and archival scrapbooks? <button onClick={onArchive}>View your past trips →</button></div></main>
 }
 function CreateTrip({ onCancel, onSave }) {
   const [form, setForm] = useState({ title: '', destination: '', type: 'solo', startDate: '', endDate: '', notes: '' }); const update = (key, value) => setForm((old) => ({ ...old, [key]: value }))

@@ -159,6 +159,19 @@ footer b{color:#f5b28f!important}
 .trip-card:after{content:"✦";position:absolute;right:16px;top:106px;color:#f4c36b;font-size:16px;text-shadow:0 0 12px #f4c36b}
 .panel{position:relative;overflow:hidden}
 .panel:after{content:"";position:absolute;width:90px;height:90px;right:-35px;top:-35px;border:1px solid #bd684344;border-radius:50%;pointer-events:none}
+.weather-card{margin:22px 0 4px;padding:18px 20px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 20px #18221d08}
+.weather-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.weather-heading h2{display:flex;align-items:center;gap:8px;font:500 20px 'Playfair Display';color:var(--deep);margin:0}
+.weather-heading .eyebrow{margin-bottom:5px}
+.weather-source{font-size:10px;color:var(--muted);background:var(--wash);border-radius:20px;padding:6px 10px}
+.weather-content{display:flex;align-items:center;gap:28px;margin-top:14px}
+.weather-temperature{display:flex;align-items:baseline;gap:10px}
+.weather-temperature strong{font:500 30px 'Playfair Display';color:var(--deep)}
+.weather-temperature span{color:var(--muted);font-size:12px}
+.weather-stat{display:flex;align-items:center;gap:8px;color:var(--green);font-size:11px}
+.weather-stat span{display:grid;gap:2px;color:var(--muted)}
+.weather-stat strong{color:var(--deep);font-size:12px}
+.weather-message{color:var(--muted);font-size:11px;margin:14px 0 0}
 html[data-theme="night"]{--bg:#17151c;--green:#c084fc;--deep:#f5e9ff;--ink:#f7f0e9;--muted:#b9aebe;--line:#393141;--wash:#2a2433;--orange:#f59e72;--white:#211d27}
 html[data-theme="night"] body{background:radial-gradient(circle at 12% 8%,#3a214a 0,transparent 35%),#17151c}
 html[data-theme="night"] .topbar{background:rgba(31,27,38,.88);border-color:#46394d}
@@ -266,5 +279,11 @@ html[data-theme="night"] .detail-page .detail-actions .button-secondary{backgrou
 html[data-theme="night"] .detail-page .expense-box .button,
 html[data-theme="night"] .detail-page .add-box .button,
 html[data-theme="night"] .detail-page .packing-panel .button{color:#2b2330}
+html[data-theme="night"] .weather-card{background:#211d27;border-color:#393141}
+html[data-theme="night"] .weather-heading h2,
+html[data-theme="night"] .weather-temperature strong,
+html[data-theme="night"] .weather-stat strong{color:#fff4e7}
+html[data-theme="night"] .weather-source{background:#332b3d;color:#d8cce0}
+html[data-theme="night"] .weather-stat{color:#c084fc}
 @media(max-width:800px){.topbar nav label.theme-switch{display:flex!important;height:44px!important;padding:0 14px!important;align-items:center;border-radius:10px}}
 @media(max-width:800px){.trip-card:nth-child(2){transform:none}.trip-card:nth-child(2):hover{transform:translateY(-3px)}.theme-toggle{display:flex!important;align-items:center}}
