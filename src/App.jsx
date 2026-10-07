@@ -98,6 +98,18 @@ function knownWeatherLocation(destination) {
   const key = Object.keys(weatherLocations).find((name) => destination.toLowerCase().includes(name))
   return weatherLocations[key]
 }
+async function findWeatherLocation(destination, signal) {
+  const queries = [...new Set([destination.trim(), destination.split(',')[0].trim()].filter(Boolean))]
+  for (const query of queries) {
+    const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=10&language=en&format=json&countryCode=IN`, { signal })
+    if (!response.ok) continue
+    const data = await response.json()
+    const indianResult = data.results?.find((result) => result.country_code === 'IN')
+    if (indianResult) return indianResult
+    if (data.results?.[0]) return data.results[0]
+  }
+  return null
+}
 function WeatherCard({ destination }) {
   const [weather, setWeather] = useState(null)
   const [status, setStatus] = useState('loading')
@@ -106,17 +118,12 @@ function WeatherCard({ destination }) {
     async function loadWeather() {
       try {
         setStatus('loading')
-        let location = knownWeatherLocation(destination)
-        if (!location) {
-          const locationResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(destination.split(',')[0].trim())}&count=1&language=en&format=json`, { signal: controller.signal })
-          if (!locationResponse.ok) throw new Error('Could not find this destination')
-          const locationData = await locationResponse.json()
-          location = locationData.results?.[0]
-        }
+        const location = knownWeatherLocation(destination) || await findWeatherLocation(destination, controller.signal)
         if (!location) throw new Error('Could not find this destination')
         const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`, { signal: controller.signal })
         if (!weatherResponse.ok) throw new Error('Weather service unavailable')
         const weatherData = await weatherResponse.json()
+        if (!weatherData.current) throw new Error('Weather data unavailable')
         setWeather({ ...weatherData.current, place: location.name, country: location.country })
         setStatus('ready')
       } catch (error) {
