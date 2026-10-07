@@ -1,132 +1,217 @@
-# 🚀 Full-Stack AI Trip Planner: React, Gemini AI, Firebase & TailwindCSS
+# Tripzy — Collaborative Travel Planner
 
-Tutorial: [TubeGuruji - Full-Stack AI Trip Planner (YouTube)](https://youtu.be/f_7grfh9TxU)
+Tripzy is a student-built, local-first travel planning application created for the CIE-2 project. It brings trip planning, itineraries, expense tracking, group settlement, packing preparation, nearby-place suggestions, live weather, and past-trip memories into one responsive workspace.
 
-An intelligent, full-stack travel planning web application that generates personalized travel itineraries, hotel recommendations, and daily activity schedules using Google's Gemini AI, Google Places API, Firebase Firestore, and Tailwind CSS.
+The active application was simplified and rebuilt from the original tutorial reference so that it is easier to understand, works on a fresh machine, and does not depend on private credentials for its main flow.
 
----
+## Features
 
-## 📑 Video Tutorial Breakdown
+- Dashboard with upcoming trip cards and a cinematic travel hero
+- Create trips with a name, destination, dates, trip style, and notes
+- Solo and group trip support
+- Editable day-wise itinerary with activity time and day number
+- Expense recording with category and payer details
+- Equal group expense splitting and balance calculations
+- Starter packing checklist with custom items and completion progress
+- Curated famous-place suggestions for Goa, Coorg, and Manali
+- Generic nearby-place suggestions for other destinations
+- Estimated trip cost based on duration, traveller count, trip style, and recorded expenses
+- Live destination weather card using the Open-Meteo API
+- Past trips archive with destination images and travel summaries
+- Animated light/dark mode switch with saved theme preference
+- Destination-specific local imagery for trip and archive cards
+- Responsive layout for desktop, tablet, and mobile screens
+- Local-first persistence through browser `localStorage`
 
-| Timestamp | Chapter | Description |
-|-----------|---------|-------------|
-| `00:00:00` | **Introduction** | Demo of the AI Trip Planner application and tech stack overview |
-| `00:05:16` | **Project Setup** | Vite + React setup, Tailwind CSS configuration, and Shadcn UI setup |
-| `00:18:41` | **React Routing** | Route configuration using `react-router-dom` (`/`, `/create-trip`, `/view-trip/:tripId`, `/my-trips`) |
-| `00:24:22` | **Landing Page** | Building the `Header` and `Hero` section with CTA and responsive styling |
-| `00:31:57` | **Trip Basic Info Form** | Destination search (Google Places Autocomplete), trip duration, budget selection, and traveler options |
-| `01:03:27` | **Generate Trip From AI** | Integrating Google Gemini AI model (`@google/generative-ai`) with structured JSON prompting |
-| `01:20:35` | **Google Authentication** | Secure sign-in dialog using `@react-oauth/google` and user profile caching |
-| `01:38:05` | **Save Trip in DB** | Storing generated trip data and user selection into Firebase Firestore (`AITrips` collection) |
-| `01:55:57` | **View Trip Details** | Building the itinerary view page (`InfoSection`, `Hotels`, `PlacesToVisit`) |
-| `02:43:01` | **Display Place Photo** | Fetching live attraction & hotel photos via Google Places Photo API |
-| `03:02:51` | **Header Update** | Authentication state in Header, profile picture, logout popover, and navigation |
-| `03:17:22` | **Users Trip History** | Fetching and displaying the authenticated user's previous trips on `/my-trips` |
-| `03:36:35` | **Deploy App** | Build optimization and deployment instructions |
+## Screens and application flow
 
----
+The application uses a single-page React flow with state-based views:
 
-## 🛠️ Tech Stack & Libraries
+1. **Dashboard** — hero section, live weather, upcoming journeys, and archive link.
+2. **Plan a trip** — form for the trip name, destination, dates, trip style, and notes.
+3. **Trip details** — itinerary, expenses, balances, packing list, nearby places, and estimated cost.
+4. **Past trips** — archive of completed journeys with filters and keepsake panels.
 
-- **Frontend Framework:** React 18 + Vite
-- **Styling & UI:** Tailwind CSS, PostCSS, Lucide React, React Icons
-- **UI Components:** Shadcn/UI (Button, Dialog, Popover, Input, Sonner)
-- **Routing:** React Router DOM v7
-- **AI Engine:** Google Gemini AI SDK (`@google/generative-ai`)
-- **Backend & Database:** Firebase v11 (Firestore)
-- **Authentication:** Google OAuth 2.0 (`@react-oauth/google`, Axios)
-- **Places & Maps:** `react-google-places-autocomplete` & Google Places API (New)
+The navigation is shared across the screens. It includes Dashboard, Past trips, Plan a trip, the animated theme switch, and the user avatar display.
 
----
+## Weather API integration
 
-## 📂 Project Structure
+Tripzy uses the public [Open-Meteo API](https://open-meteo.com/) to display current weather on the dashboard.
 
+The integration uses:
+
+- Open-Meteo Geocoding API for new or custom destinations
+- Open-Meteo Forecast API for current temperature, weather code, humidity, and wind speed
+- Known coordinates for supported destinations such as Coorg, Goa, Manali, Wayanad, Jaisalmer, and Puducherry
+- Loading and error states so the rest of the application remains usable if the API is unavailable
+
+No API key is required.
+
+## Light and dark mode
+
+The theme switch is an animated day/night control in the navigation. It changes the colors of the dashboard, form, trip workspace, archive, cards, panels, badges, and buttons.
+
+The preference is saved in browser storage:
+
+```text
+localStorage key: tripzy-theme
 ```
-├── public/
-│   ├── laptop.png         # Hero mockup image
-│   ├── logo.png           # Fallback image
-│   ├── logo.svg           # Main application logo
-│   └── vite.svg
+
+Tripzy uses separate logo assets for both themes:
+
+- `assets/tripzy-light-mode-logo.png`
+- `assets/tripzy-dark-mode-logo.png`
+
+The animated toggle design was used as a reference from [Uiverse](https://uiverse.io/).
+
+## Technology stack
+
+- **Framework:** React 18
+- **Build tool:** Vite
+- **Language:** JavaScript and JSX
+- **Styling:** CSS
+- **Icons:** Lucide React
+- **Fonts:** DM Sans and Playfair Display
+- **Persistence:** Browser `localStorage`
+- **Weather service:** Open-Meteo API
+- **Deployment configuration:** Netlify SPA redirect in `netlify.toml`
+
+The active application does not require Firebase, Google OAuth, Gemini, Google Places, a database, or a custom backend server.
+
+## Data and storage
+
+Trip data is stored locally in the browser under:
+
+```text
+tripnest-trips
+```
+
+Stored data includes:
+
+- Trip identity and destination
+- Start and end dates
+- Solo/group type
+- Notes and members
+- Invite code
+- Itinerary activities
+- Expenses and categories
+- Packing-list items
+
+The application loads demo trips when no saved trip collection exists. This keeps the dashboard useful on the first launch.
+
+## Project structure
+
+```text
+├── assets/
+│   ├── tripzy-light-mode-logo.png
+│   ├── tripzy-dark-mode-logo.png
+│   ├── tripnest-bg.png
+│   └── trip-images/
+│       ├── coorg.jpg
+│       ├── default.jpg
+│       ├── goa.jpg
+│       ├── jaisalmer.jpg
+│       ├── manali.jpg
+│       ├── pondicherry.jpg
+│       └── wayanad.jpg
 ├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── custom/        # Custom shared components
-│   │   │   ├── Header.jsx # Top navigation bar with auth & user profile
-│   │   │   └── Hero.jsx   # Landing page hero banner
-│   │   └── ui/            # Shadcn UI primitives
-│   │       ├── button.jsx
-│   │       ├── dialog.jsx
-│   │       ├── input.jsx
-│   │       ├── popover.jsx
-│   │       └── sonner.jsx
-│   ├── constants/
-│   │   └── options.jsx    # Budget tiers, travel group sizes, and AI prompt template
-│   ├── create-trip/
-│   │   └── index.jsx      # Preferences form, Google Auth trigger, and AI trip generator
-│   ├── my-trips/
-│   │   ├── components/
-│   │   │   └── UserTripCardItem.jsx # Trip card preview with photo
-│   │   └── index.jsx      # List of all trips saved by the logged-in user
-│   ├── service/
-│   │   ├── AIModal.jsx        # Google Gemini AI chat session & model configuration
-│   │   ├── firebaseConfig.jsx # Firebase app & Firestore initialization
-│   │   └── GlobalApi.jsx      # Google Places API photo & search endpoints
-│   ├── view-trip/
-│   │   ├── [tripId]/
-│   │   │   └── index.jsx      # Dynamic trip detail page loader
-│   │   └── components/
-│   │       ├── Footer.jsx
-│   │       ├── HotelCardItem.jsx
-│   │       ├── Hotels.jsx
-│   │       ├── InfoSection.jsx
-│   │       ├── PlaceCardItem.jsx
-│   │       └── PlacesToVisit.jsx
-│   ├── lib/
-│   │   └── utils.js       # Tailwind CSS class merging helper
-│   ├── App.css
-│   ├── App.jsx            # Landing page wrapper
-│   ├── index.css          # Tailwind CSS global styles & Shadcn theme variables
-│   └── main.jsx           # App entry point with RouterProvider & GoogleOAuthProvider
-├── .env.example           # Template for required environment variables
+│   ├── App.jsx             # Active Tripzy application and screen flow
+│   ├── App.css             # Layout, responsive styles, themes, and animations
+│   ├── index.css           # Global stylesheet entry
+│   └── main.jsx            # React application entry point
+├── expected look/          # Supplied visual references and design notes
+├── Project Report/         # College-format project report files
+├── .env.example
+├── netlify.toml
 ├── package.json
-├── tailwind.config.js
+├── package-lock.json
 └── vite.config.js
 ```
 
----
+Older tutorial-era files remain in the repository for reference, but the active application is rendered by `src/main.jsx` and `src/App.jsx`.
 
-## ⚙️ Setup and Running Locally
+## Running locally
 
-### 1. Install Dependencies
-```bash
+### 1. Install dependencies
+
+```powershell
 npm install
 ```
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env` in the root folder:
-```bash
-cp .env.example .env
-```
-Fill in the following credentials:
-```env
-# Google Places API Key (from Google Cloud Console)
-VITE_GOOGLE_PLACE_API_KEY=your_google_place_api_key
+### 2. Start the development server
 
-# Google Gemini AI API Key (from Google AI Studio: https://aistudio.google.com/)
-VITE_GOOGLE_GEMINI_AI_API_KEY=your_gemini_api_key
-
-# Google OAuth Client ID (from Google Cloud Console -> Credentials -> OAuth 2.0 Client IDs)
-VITE_GOOGLE_AUTH_CLIENT_ID=your_google_oauth_client_id
-```
-
-### 3. Start Development Server
-```bash
+```powershell
 npm run dev
 ```
-Open `http://localhost:5173` in your browser.
 
-### 4. Build for Production
-```bash
+Open the URL shown by Vite, normally:
+
+```text
+http://localhost:5173/
+```
+
+### 3. Create a production build
+
+```powershell
 npm run build
 ```
-The compiled output will be generated in the `dist/` directory.
+
+### 4. Preview the production build
+
+```powershell
+npm run preview
+```
+
+The main Tripzy flow does not require `.env` credentials. The `.env` file is ignored so private values are not committed.
+
+## Netlify deployment
+
+The root project includes `netlify.toml`:
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+Use the repository root as the Netlify project directory. Netlify will install dependencies, run `npm run build`, and publish the `dist` folder.
+
+## Tutorial and references
+
+The project began with ideas from the following tutorial:
+
+- [Full-Stack AI Trip Planner tutorial](https://youtu.be/f_7grfh9TxU?si=h29iOX6N_57SZHOv)
+
+Additional design reference:
+
+- [Uiverse animated toggle components](https://uiverse.io/)
+
+The tutorial was used for learning direction only. Tripzy's active flow, visual identity, local data model, itinerary tools, expense calculations, weather section, theme system, destination guide, and responsive styling were adapted for this project.
+
+## Repository
+
+[GitHub — Krishnendu-ux/Tripzy](https://github.com/Krishnendu-ux/Tripzy)
+
+## Future improvements
+
+Possible future versions could add:
+
+- User accounts and secure authentication
+- Real invite-code joining between devices
+- Cloud synchronization and real-time collaboration
+- Live maps and route planning
+- Editable group members
+- Expense deletion and receipt uploads
+- More detailed weather forecasts
+- Additional destinations and richer travel guides
+
+## Author
+
+**Krishnendu Nayak**  
+USN: `1RUA24SCS0052`
+
