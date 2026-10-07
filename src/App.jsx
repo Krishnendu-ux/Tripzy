@@ -75,6 +75,19 @@ function weatherDescription(code) {
   if ([95, 96, 99].includes(code)) return 'Thunderstorms'
   return 'Current conditions'
 }
+const weatherLocations = {
+  coorg: { name: 'Coorg', country: 'India', latitude: 12.4244, longitude: 75.7382 },
+  goa: { name: 'Goa', country: 'India', latitude: 15.2993, longitude: 74.124 },
+  manali: { name: 'Manali', country: 'India', latitude: 32.2396, longitude: 77.1887 },
+  wayanad: { name: 'Wayanad', country: 'India', latitude: 11.6854, longitude: 76.132 },
+  jaisalmer: { name: 'Jaisalmer', country: 'India', latitude: 26.9157, longitude: 70.9083 },
+  pondicherry: { name: 'Puducherry', country: 'India', latitude: 11.9416, longitude: 79.8083 },
+  puducherry: { name: 'Puducherry', country: 'India', latitude: 11.9416, longitude: 79.8083 },
+}
+function knownWeatherLocation(destination) {
+  const key = Object.keys(weatherLocations).find((name) => destination.toLowerCase().includes(name))
+  return weatherLocations[key]
+}
 function WeatherCard({ destination }) {
   const [weather, setWeather] = useState(null)
   const [status, setStatus] = useState('loading')
@@ -83,10 +96,13 @@ function WeatherCard({ destination }) {
     async function loadWeather() {
       try {
         setStatus('loading')
-        const locationResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(destination)}&count=1&language=en&format=json`, { signal: controller.signal })
-        if (!locationResponse.ok) throw new Error('Could not find this destination')
-        const locationData = await locationResponse.json()
-        const location = locationData.results?.[0]
+        let location = knownWeatherLocation(destination)
+        if (!location) {
+          const locationResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(destination.split(',')[0].trim())}&count=1&language=en&format=json`, { signal: controller.signal })
+          if (!locationResponse.ok) throw new Error('Could not find this destination')
+          const locationData = await locationResponse.json()
+          location = locationData.results?.[0]
+        }
         if (!location) throw new Error('Could not find this destination')
         const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`, { signal: controller.signal })
         if (!weatherResponse.ok) throw new Error('Weather service unavailable')
