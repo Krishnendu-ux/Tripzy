@@ -186,7 +186,6 @@ html[data-theme="night"] .active-nav{background:#f4f0e8;color:#2b2330!important}
 html[data-theme="night"] .topbar .button{background:#f59e72;color:#241a20;box-shadow:0 6px 16px #f59e7240}
 html[data-theme="night"] .topbar .button:hover{background:#ffb08c;color:#241a20}
 html[data-theme="night"] .avatar{background:#ead0aa;color:#342838}
-html[data-theme="night"] .brand{background:#f4f0e8;border-radius:12px;padding:4px 10px}
 html[data-theme="night"] .archive-card{background:#211d27;color:var(--ink);border:1px solid #393141}
 html[data-theme="night"] .archive-card>div:last-child small{color:#d0c2d6}
 html[data-theme="night"] .archive-card h3{color:#fff4e7}
